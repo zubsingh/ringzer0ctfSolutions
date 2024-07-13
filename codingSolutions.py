@@ -47,3 +47,47 @@ if '----- BEGIN MESSAGE -----' in response.text:
     
     # Print the response text from the second request
     print(response.text)
+
+
+#Can you help me find the answer to this equation
+
+# Define the URL to get the challenge message
+url = 'http://challenges.ringzer0team.com:10032/'
+
+# Make a GET request to the challenge URL
+response = requests.get(url)
+
+# Extract the message part between the markers
+start_marker = '----- BEGIN MESSAGE -----'
+end_marker = '----- END MESSAGE -----'
+start_index = response.text.index(start_marker) + len(start_marker)
+end_index = response.text.index(end_marker)
+message = response.text[start_index:end_index].strip()
+
+# Remove any HTML tags from the extracted message
+import re
+message = re.sub(r'<[^>]+>', '', message)
+
+# Print the cleaned message
+print('Cleaned message:', message)
+
+# Parse the arithmetic expression
+parts = message.split()
+num1 = int(parts[0])  # First number
+num2 = int(parts[2], 16)  # Hexadecimal number
+num3 = int(parts[4], 2)  # Binary number
+
+# Perform the arithmetic operations
+result = num1 + num2 - num3
+
+# Print the result
+print('Result:', result)
+
+# Construct the URL with the result
+answer_url = f'http://challenges.ringzer0team.com:10032/?r={result}'
+
+# Make a GET request to the answer URL
+response = requests.get(answer_url)
+
+# Print the response text
+print(response.text)
